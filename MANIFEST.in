@@ -1,0 +1,18 @@
+include README.md
+include TESTING.md  
+include requirements.txt
+include LICENSE
+recursive-include examples *.sql
+recursive-include tests *.py
+recursive-include scripts *.py
+include Makefile
+include pyproject.toml
+include setup.py
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.so
+global-exclude .DS_Store
+prune test_output
+prune fhir_libraries  
+prune demo_output
+prune output

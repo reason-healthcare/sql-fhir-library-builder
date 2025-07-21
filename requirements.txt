@@ -1,0 +1,7 @@
+# No external dependencies required
+# The SQL Annotation Parser uses only Python standard library modules
+
+# Optional development dependencies for testing and formatting
+pytest>=7.0.0
+black>=22.0.0
+flake8>=4.0.0
