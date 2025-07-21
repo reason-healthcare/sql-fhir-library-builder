@@ -114,7 +114,6 @@ class FHIRLibraryBuilder:
         library = {
             "resourceType": "Library",
             "id": library_id,
-            "meta": {"versionId": "1", "lastUpdated": datetime.now().isoformat() + "Z"},
             "status": self._get_annotation_value(annotations, "status", "draft"),
             "type": {
                 "coding": [

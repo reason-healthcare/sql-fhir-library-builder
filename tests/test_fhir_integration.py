@@ -7,6 +7,7 @@ to FHIR Library resources.
 """
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 from sql_fhir_library_generator import FHIRLibraryBuilder, SQLAnnotationParser
@@ -255,7 +256,7 @@ def main():
             "resourceType": "Bundle",
             "id": "sql-libraries-batch",
             "type": "collection",
-            "timestamp": library.get("meta", {}).get("lastUpdated"),
+            "timestamp": datetime.now().isoformat() + "Z",
             "total": len(libraries),
             "entry": [{"resource": lib} for lib in libraries],
         }

@@ -73,7 +73,7 @@ def test_empty_property_removal():
 
     kept_properties = []
     for key in library.keys():
-        if key not in ["resourceType", "id", "meta", "type", "content"]:
+        if key not in ["resourceType", "id", "type", "content"]:
             kept_properties.append(key)
 
     print(f"Properties kept: {', '.join(kept_properties)}")
