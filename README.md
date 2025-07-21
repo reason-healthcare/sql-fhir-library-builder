@@ -1,5 +1,11 @@
 # SQL FHIR Library Generator
 
+[![Tests](https://github.com/reason-healthcare/sql-fhir-library-builder/actions/workflows/test.yml/badge.svg)](https://github.com/reason-healthcare/sql-fhir-library-builder/actions/workflows/test.yml)
+[![Code Quality](https://github.com/reason-healthcare/sql-fhir-library-builder/actions/workflows/quality.yml/badge.svg)](https://github.com/reason-healthcare/sql-fhir-library-builder/actions/workflows/quality.yml)
+[![Demo](https://github.com/reason-healthcare/sql-fhir-library-builder/actions/workflows/demo.yml/badge.svg)](https://github.com/reason-healthcare/sql-fhir-library-builder/actions/workflows/demo.yml)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 A Python library that extracts `@annotations` from SQL file comments and creates FHIR Library resources.
 
 ## Features
@@ -337,6 +343,16 @@ make format      # Format code with isort + Black
 make lint        # Run code quality checks
 make quality     # Run format + lint + test pipeline
 ```
+
+## CI/CD
+
+This project uses GitHub Actions for continuous integration and deployment:
+- **Tests**: Automated testing on multiple Python versions
+- **Code Quality**: Formatting and linting checks  
+- **Demo Validation**: Ensures examples work correctly
+- **Automated Publishing**: PyPI releases on tags
+
+See [CI_CD.md](CI_CD.md) for detailed workflow documentation.
 
 ## Requirements
 

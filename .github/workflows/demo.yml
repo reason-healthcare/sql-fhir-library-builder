@@ -1,0 +1,50 @@
+name: Demo & Examples
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly to catch any drift
+    - cron: '0 0 * * 0'
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    name: Run Demo & Examples
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+
+    - name: Run demo
+      run: python scripts/demo.py
+
+    - name: Validate demo outputs
+      run: |
+        echo "Checking demo outputs..."
+        test -d demo_output || (echo "❌ Demo output directory missing" && exit 1)
+        ls -la demo_output/
+        echo "✅ Demo completed successfully"
+
+    - name: Run comprehensive tests
+      run: python scripts/run_all_tests.py
+
+    - name: Upload demo artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: demo-outputs
+        path: |
+          demo_output/
+          test_output/
+        retention-days: 30
