@@ -35,6 +35,7 @@ dev = [
     "pytest-cov>=2.0",
     "black>=21.0",
     "flake8>=3.8",
+    "isort>=5.0",
     "mypy>=0.812",
 ]
 
@@ -70,6 +71,12 @@ extend-exclude = '''
   | dist
 )/
 '''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["sql_fhir_library_generator"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

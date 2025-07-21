@@ -1,6 +1,6 @@
 # Makefile for SQL FHIR Library Generator
 
-.PHONY: help install test test-quick clean build check lint format docs dev-install
+.PHONY: help install test test-quick clean build check lint format format-check quality docs dev-install
 
 # Default target
 help:
@@ -13,7 +13,9 @@ help:
 	@echo "  clean        Clean build artifacts and outputs"
 	@echo "  build        Build distribution packages"
 	@echo "  lint         Run code linting"
-	@echo "  format       Format code with black"
+	@echo "  format       Format code with isort and black"
+	@echo "  format-check Check code formatting without changes"
+	@echo "  quality      Run format + lint + test in sequence"
 	@echo "  demo         Run feature demo"
 	@echo ""
 	@echo "Development workflow:"
@@ -58,11 +60,19 @@ check:
 # Code quality
 lint:
 	@echo "🔍 Running flake8..."
-	@flake8 src/sql_fhir_library_generator tests --max-line-length=88 --ignore=E203,W503 || echo "⚠️  Install flake8: pip install flake8"
+	@python -m flake8 src/sql_fhir_library_generator tests --max-line-length=88 --ignore=E203,W503 || echo "⚠️  Install flake8: pip install flake8"
 
 format:
+	@echo "🔧 Sorting imports with isort..."
+	@python -m isort src/sql_fhir_library_generator tests scripts || echo "⚠️  Install isort: pip install isort"
 	@echo "🎨 Formatting code with black..."
-	@black src/sql_fhir_library_generator tests scripts --line-length=88 || echo "⚠️  Install black: pip install black"
+	@python -m black src/sql_fhir_library_generator tests scripts --line-length=88 || echo "⚠️  Install black: pip install black"
+
+format-check:
+	@echo "🔍 Checking import sorting..."
+	@python -m isort src/sql_fhir_library_generator tests scripts --check-only --diff || echo "⚠️  Install isort: pip install isort"
+	@echo "🔍 Checking code formatting..."
+	@python -m black src/sql_fhir_library_generator tests scripts --line-length=88 --check --diff || echo "⚠️  Install black: pip install black"
 
 # Cleaning
 clean:
@@ -114,3 +124,7 @@ info:
 	@echo "  Tests: tests/"
 	@echo "  Scripts: scripts/"
 	@echo "  Examples: examples/"
+
+# Quality assurance pipeline
+quality: format lint test-quick
+	@echo "✅ Quality pipeline complete!"

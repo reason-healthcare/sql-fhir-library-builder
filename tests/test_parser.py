@@ -8,6 +8,7 @@ annotations from SQL files and display the results.
 
 import sys
 from pathlib import Path
+
 from sql_fhir_library_generator import SQLAnnotationParser
 
 
@@ -15,29 +16,29 @@ def print_annotations(annotations: dict, title: str):
     """Print annotations in a formatted way."""
     print(f"\n{title}")
     print("=" * len(title))
-    
+
     if not annotations:
         print("No annotations found.")
         return
-    
+
     for key, value in annotations.items():
         value_type = type(value).__name__
         if isinstance(value, list):
             formatted_value = f"[{', '.join(map(str, value))}]"
         else:
             formatted_value = str(value)
-        
+
         print(f"  @{key}: {formatted_value} ({value_type})")
 
 
 def main():
     """Main test function."""
     parser = SQLAnnotationParser()
-    
+
     # Test 1: Parse example SQL content directly
     print("SQL Annotation Parser - Test Results")
     print("====================================")
-    
+
     example_sql = """
     -- @author: Test User
     -- @version: 1.0
@@ -58,18 +59,18 @@ def main():
     
     CREATE TABLE test (id INT);
     """
-    
+
     annotations = parser.parse_content(example_sql)
     print_annotations(annotations, "Test 1: Direct Content Parsing")
-    
+
     # Test 2: Parse files from examples directory
     examples_dir = Path("examples")
     if examples_dir.exists():
         print(f"\n\nTest 2: Parsing Example Files")
         print("=" * 30)
-        
+
         sql_files = list(examples_dir.glob("*.sql"))
-        
+
         if sql_files:
             for sql_file in sql_files:
                 try:
@@ -81,29 +82,33 @@ def main():
             print("No SQL files found in examples directory.")
     else:
         print(f"\n\nExamples directory not found. Skipping file parsing test.")
-    
+
     # Test 3: Parse multiple files at once
     if examples_dir.exists():
         sql_files = list(examples_dir.glob("*.sql"))
         if sql_files:
             print(f"\n\nTest 3: Batch File Processing")
             print("=" * 30)
-            
+
             batch_results = parser.parse_multiple_files(sql_files)
-            
+
             for file_path, file_annotations in batch_results.items():
                 filename = Path(file_path).name
-                if 'error' in file_annotations:
+                if "error" in file_annotations:
                     print(f"\n{filename}: ERROR - {file_annotations['error']}")
                 else:
                     print(f"\n{filename}: {len(file_annotations)} annotations found")
-                    for key, value in list(file_annotations.items())[:3]:  # Show first 3
+                    for key, value in list(file_annotations.items())[
+                        :3
+                    ]:  # Show first 3
                         print(f"  @{key}: {value}")
                     if len(file_annotations) > 3:
                         print(f"  ... and {len(file_annotations) - 3} more")
-    
+
     print(f"\n\nTesting completed!")
-    print(f"For more detailed examples, check the SQL files in the 'examples' directory.")
+    print(
+        f"For more detailed examples, check the SQL files in the 'examples' directory."
+    )
 
 
 if __name__ == "__main__":

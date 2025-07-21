@@ -321,6 +321,23 @@ All tests generate their outputs in organized directories:
 - `test_output/` - Test-specific FHIR Library files
 - `fhir_libraries/` - Main output directory for FHIR Libraries
 
+## Development
+
+This project follows modern Python development practices:
+
+- **Code Formatting**: [Black](https://black.readthedocs.io/) for consistent code style
+- **Import Sorting**: [isort](https://isort.readthedocs.io/) for organized imports  
+- **Code Quality**: [flake8](https://flake8.pycqa.org/) for linting
+
+See [CODE_STYLE.md](CODE_STYLE.md) for detailed formatting guidelines and setup instructions.
+
+**Development Commands:**
+```bash
+make format      # Format code with isort + Black
+make lint        # Run code quality checks
+make quality     # Run format + lint + test pipeline
+```
+
 ## Requirements
 
 - Python 3.6+
