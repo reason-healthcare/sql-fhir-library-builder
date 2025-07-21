@@ -5,7 +5,7 @@
 @status: active
 @author: Database Team
 @sqlDialect: postgres
-@dialectVersion: 15.4
+@sqlDialectVersion: 15.4
 */
 
 -- PostgreSQL 15.4 specific query using advanced features

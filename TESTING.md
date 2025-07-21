@@ -73,7 +73,7 @@ Tests the `@sqlDialect` annotation feature that modifies content types (e.g., `a
 ```bash
 python test_dialect_version.py
 ```
-Tests the `@dialectVersion` annotation feature that adds version parameters to MIME types (e.g., `application/sql; dialect=hive; version=3.1.2`).
+Tests the `@sqlDialectVersion` annotation feature that adds version parameters to MIME types (e.g., `application/sql; dialect=hive; version=3.1.2`).
 
 ### Multiple Dependencies Testing
 ```bash

@@ -2,7 +2,7 @@
 """
 SQL Dialect Version Feature Test
 
-This script demonstrates the dialectVersion annotation feature that allows
+This script demonstrates the sqlDialectVersion annotation feature that allows
 specifying version parameters in MIME types for SQL dialects.
 """
 
@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 from sql_fhir_library_generator import FHIRLibraryBuilder
 
 def test_dialect_version():
-    """Test the dialectVersion annotation functionality."""
+    """Test the sqlDialectVersion annotation functionality."""
     
     builder = FHIRLibraryBuilder(output_dir='test_output')
     
@@ -61,16 +61,16 @@ def test_dialect_version():
     print("SUPPORTED DIALECT VERSION COMBINATIONS")
     print("=" * 80)
     print()
-    print("The dialectVersion annotation works with any SQL dialect.")
+    print("The sqlDialectVersion annotation works with any SQL dialect.")
     print("Examples of content types that can be generated:")
-    print("  @sqlDialect: hive, @dialectVersion: 3.1.2     → application/sql; dialect=hive; version=3.1.2")
-    print("  @sqlDialect: spark, @dialectVersion: 3.4.0    → application/sql; dialect=spark; version=3.4.0") 
-    print("  @sqlDialect: postgres, @dialectVersion: 15.4  → application/sql; dialect=postgres; version=15.4")
-    print("  @sqlDialect: mysql, @dialectVersion: 8.0.33   → application/sql; dialect=mysql; version=8.0.33")
-    print("  @sqlDialect: oracle, @dialectVersion: 19c     → application/sql; dialect=oracle; version=19c")
-    print("  @sqlDialect: snowflake, @dialectVersion: 7.x  → application/sql; dialect=snowflake; version=7.x")
-    print("  @sqlDialect: hive (no version)                → application/sql; dialect=hive")
-    print("  (no annotations)                              → application/sql")
+    print("  @sqlDialect: hive, @sqlDialectVersion: 3.1.2     → application/sql; dialect=hive; version=3.1.2")
+    print("  @sqlDialect: spark, @sqlDialectVersion: 3.4.0    → application/sql; dialect=spark; version=3.4.0") 
+    print("  @sqlDialect: postgres, @sqlDialectVersion: 15.4  → application/sql; dialect=postgres; version=15.4")
+    print("  @sqlDialect: mysql, @sqlDialectVersion: 8.0.33   → application/sql; dialect=mysql; version=8.0.33")
+    print("  @sqlDialect: oracle, @sqlDialectVersion: 19c     → application/sql; dialect=oracle; version=19c")
+    print("  @sqlDialect: snowflake, @sqlDialectVersion: 7.x  → application/sql; dialect=snowflake; version=7.x")
+    print("  @sqlDialect: hive (no version)                   → application/sql; dialect=hive")
+    print("  (no annotations)                                 → application/sql")
     print()
 
 if __name__ == "__main__":

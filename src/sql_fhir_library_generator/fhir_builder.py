@@ -141,9 +141,9 @@ class FHIRLibraryBuilder:
             dialect = annotations['sqlDialect'].strip().lower()
             content_type = f"application/sql; dialect={dialect}"
             
-            # Add dialectVersion parameter if provided
-            if 'dialectVersion' in annotations and annotations['dialectVersion']:
-                version = str(annotations['dialectVersion']).strip()
+            # Add sqlDialectVersion parameter if provided
+            if 'sqlDialectVersion' in annotations and annotations['sqlDialectVersion']:
+                version = str(annotations['sqlDialectVersion']).strip()
                 content_type += f"; version={version}"
             
             library['content'][0]['contentType'] = content_type
@@ -283,10 +283,10 @@ class FHIRLibraryBuilder:
         # Handle custom extensions for non-standard annotations
         extensions = []
         standard_keys = set(self.annotation_mappings.keys())
-        # Add relatedDependency, sqlDialect, and dialectVersion to standard keys since we handle them specially
+        # Add relatedDependency, sqlDialect, and sqlDialectVersion to standard keys since we handle them specially
         standard_keys.add('relatedDependency')
         standard_keys.add('sqlDialect')
-        standard_keys.add('dialectVersion')
+        standard_keys.add('sqlDialectVersion')
         
         for key, value in annotations.items():
             if key not in standard_keys and value is not None and str(value).strip():

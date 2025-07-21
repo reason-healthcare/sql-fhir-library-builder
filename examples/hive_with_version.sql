@@ -5,7 +5,7 @@
 @status: draft
 @author: Data Engineering Team
 @sqlDialect: hive
-@dialectVersion: 3.1.2
+@sqlDialectVersion: 3.1.2
 */
 
 -- This is a Hive-specific query using HiveQL syntax with version 3.1.2 features
