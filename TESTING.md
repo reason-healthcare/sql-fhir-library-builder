@@ -67,7 +67,7 @@ Tests FHIR Library resource generation, base64 encoding of SQL content, and prop
 ```bash
 python test_sql_dialect.py
 ```
-Tests the `@sqlDialect` annotation feature that modifies content types (e.g., `application/hive+sql`).
+Tests the `@sqlDialect` annotation feature that modifies content types (e.g., `application/sql; dialect=hive`).
 
 ### Multiple Dependencies Testing
 ```bash

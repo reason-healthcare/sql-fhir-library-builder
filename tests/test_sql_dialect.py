@@ -16,8 +16,8 @@ def test_sql_dialect():
     
     # Test cases with different SQL dialects
     test_files = [
-        ('examples/hive_example.sql', 'application/hive+sql', 'Hive'),
-        ('examples/spark_example.sql', 'application/spark+sql', 'Spark'),
+        ('examples/hive_example.sql', 'application/sql; dialect=hive', 'Hive'),
+        ('examples/spark_example.sql', 'application/sql; dialect=spark', 'Spark'),
         ('examples/sql_on_fhir_example.sql', 'application/sql', 'Standard SQL (no dialect)')
     ]
     
@@ -67,12 +67,12 @@ def test_sql_dialect():
     print()
     print("The sqlDialect annotation supports any SQL dialect name.")
     print("Examples of content types that can be generated:")
-    print("  @sqlDialect: hive     → application/hive+sql")
-    print("  @sqlDialect: spark    → application/spark+sql") 
-    print("  @sqlDialect: mysql    → application/mysql+sql")
-    print("  @sqlDialect: postgres → application/postgres+sql")
-    print("  @sqlDialect: oracle   → application/oracle+sql")
-    print("  @sqlDialect: snowflake → application/snowflake+sql")
+    print("  @sqlDialect: hive     → application/sql; dialect=hive")
+    print("  @sqlDialect: spark    → application/sql; dialect=spark") 
+    print("  @sqlDialect: mysql    → application/sql; dialect=mysql")
+    print("  @sqlDialect: postgres → application/sql; dialect=postgres")
+    print("  @sqlDialect: oracle   → application/sql; dialect=oracle")
+    print("  @sqlDialect: snowflake → application/sql; dialect=snowflake")
     print("  (no annotation)       → application/sql")
     print()
 

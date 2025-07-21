@@ -139,7 +139,7 @@ class FHIRLibraryBuilder:
         # Handle sqlDialect annotation to modify content type
         if 'sqlDialect' in annotations and annotations['sqlDialect']:
             dialect = annotations['sqlDialect'].strip().lower()
-            library['content'][0]['contentType'] = f"application/{dialect}+sql"
+            library['content'][0]['contentType'] = f"application/sql; dialect={dialect}"
         
         # Generate name from title if not provided
         if 'name' not in library and 'title' in library:

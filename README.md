@@ -13,7 +13,7 @@ A Python library that extracts `@annotations` from SQL file comments and creates
 - **Multiple Annotations**: Supports multiple annotations with the same key (collected into lists)
 - **Batch Processing**: Can parse multiple SQL files at once
 - **FHIR Library Generation**: Creates FHIR Library resources with base64-encoded SQL content
-- **SQL Dialect Support**: Supports `@sqlDialect` annotation to customize content type (e.g., `application/hive+sql`)
+- **SQL Dialect Support**: Supports `@sqlDialect` annotation to customize content type (e.g., `application/sql; dialect=hive`)
 - **Automatic Name Generation**: Generates PascalCase `name` field from `title` when `@name` annotation is not provided
 - **Related Dependencies**: Handles `@relatedDependency` annotations and converts them to FHIR `relatedArtifact` entries
 - **Error Handling**: Robust error handling for file operations and parsing
@@ -96,16 +96,16 @@ DISTRIBUTE BY patient_id
 SORT BY patient_id;
 ```
 
-This generates a FHIR Library with content type `application/hive+sql` instead of the default `application/sql`.
+This generates a FHIR Library with content type `application/sql; dialect=hive` instead of the default `application/sql`.
 
 **Supported Dialects:**
-- `@sqlDialect: hive` → `application/hive+sql`
-- `@sqlDialect: spark` → `application/spark+sql`  
-- `@sqlDialect: mysql` → `application/mysql+sql`
-- `@sqlDialect: postgres` → `application/postgres+sql`
-- `@sqlDialect: oracle` → `application/oracle+sql`
-- `@sqlDialect: snowflake` → `application/snowflake+sql`
-- Any custom dialect name → `application/{dialect}+sql`
+- `@sqlDialect: hive` → `application/sql; dialect=hive`
+- `@sqlDialect: spark` → `application/sql; dialect=spark`  
+- `@sqlDialect: mysql` → `application/sql; dialect=mysql`
+- `@sqlDialect: postgres` → `application/sql; dialect=postgres`
+- `@sqlDialect: oracle` → `application/sql; dialect=oracle`
+- `@sqlDialect: snowflake` → `application/sql; dialect=snowflake`
+- Any custom dialect name → `application/sql; dialect={dialect}`
 - No annotation → `application/sql` (default)
 
 ### Automatic Name Generation
