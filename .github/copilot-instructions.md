@@ -2,7 +2,7 @@
 
 # SQL FHIR Library Generator Project
 
-This project is a Python-based SQL parser that extracts @annotations from SQL comments and generates FHIR Library resources. It supports multiple SQL dialects and provides a comprehensive test suite to ensure functionality. 
+This project is a Python-based SQL parser that extracts @annotations from SQL comments and generates FHIR Library resources. It supports multiple SQL dialects with version specifications and provides a comprehensive test suite to ensure functionality. 
 
 ## Context
 - The main parser is in `sql_fhir_library_generator/parser.py` 
@@ -10,6 +10,7 @@ This project is a Python-based SQL parser that extracts @annotations from SQL co
 - The parser supports both single-line (`--`) and multi-line (`/* */`) SQL comments
 - Annotations can be in formats: `@key value`, `@key: value`, `@key = value`
 - Values are automatically converted to appropriate Python types (boolean, int, float, list, string)
+- SQL dialect support: `@sqlDialect` and `@dialectVersion` create MIME types like `application/sql; dialect=hive; version=3.1.2`
 
 ## Code Style Guidelines
 - Use clear, descriptive variable and function names

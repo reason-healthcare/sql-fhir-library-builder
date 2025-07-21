@@ -19,7 +19,8 @@ def run_quick_tests():
         'tests/test_multiple_dependencies.py',
         'tests/test_name_generation.py',
         'tests/test_empty_properties.py',
-        'tests/test_sql_dialect.py'
+        'tests/test_sql_dialect.py',
+        'tests/test_dialect_version.py'
     ]
     
     print("🚀 Quick Test Run - SQL FHIR Library Generator")

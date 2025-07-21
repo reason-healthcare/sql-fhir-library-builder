@@ -33,6 +33,7 @@ class TestRunner:
             ('tests/test_name_generation.py', 'Automatic Name Generation Tests'),
             ('tests/test_empty_properties.py', 'Empty Property Removal Tests'),
             ('tests/test_sql_dialect.py', 'SQL Dialect Annotation Tests'),
+            ('tests/test_dialect_version.py', 'Dialect Version Annotation Tests'),
         ]
         
     def print_banner(self, title: str, width: int = 80, char: str = '='):
@@ -149,12 +150,15 @@ class TestRunner:
         print("🔍 Checking project dependencies...")
         
         required_files = [
-            'sql_annotation_parser.py',
-            'fhir_library_builder.py',
+            'src/sql_fhir_library_generator/__init__.py',
+            'src/sql_fhir_library_generator/parser.py',
+            'src/sql_fhir_library_generator/fhir_builder.py',
             'examples/sql_on_fhir_example.sql',
             'examples/hive_example.sql',
             'examples/spark_example.sql',
-            'examples/postgres_example.sql'
+            'examples/postgres_example.sql',
+            'examples/hive_with_version.sql',
+            'examples/postgres_with_version.sql'
         ]
         
         missing_files = []

@@ -13,7 +13,7 @@ A Python library that extracts `@annotations` from SQL file comments and creates
 - **Multiple Annotations**: Supports multiple annotations with the same key (collected into lists)
 - **Batch Processing**: Can parse multiple SQL files at once
 - **FHIR Library Generation**: Creates FHIR Library resources with base64-encoded SQL content
-- **SQL Dialect Support**: Supports `@sqlDialect` annotation to customize content type (e.g., `application/sql; dialect=hive`)
+- **SQL Dialect Support**: Supports `@sqlDialect` and `@dialectVersion` annotations to customize content type (e.g., `application/sql; dialect=hive; version=3.1.2`)
 - **Automatic Name Generation**: Generates PascalCase `name` field from `title` when `@name` annotation is not provided
 - **Related Dependencies**: Handles `@relatedDependency` annotations and converts them to FHIR `relatedArtifact` entries
 - **Error Handling**: Robust error handling for file operations and parsing
@@ -78,33 +78,34 @@ This creates FHIR `relatedArtifact` entries with type "depends-on" and the speci
 
 ### SQL Dialect Support
 
-Use the `@sqlDialect` annotation to specify the SQL dialect, which customizes the FHIR Library content type:
+Use the `@sqlDialect` annotation to specify the SQL dialect, which customizes the FHIR Library content type. You can also use `@dialectVersion` to specify a version:
 
 ```sql
 /*
 @title: Hive Analytics Query
 @description: Advanced analytics using Hive SQL features
 @sqlDialect: hive
+@dialectVersion: 3.1.2
 */
 
--- Using Hive-specific syntax
+-- Using Hive-specific syntax with version 3.1.2 features
 SELECT 
     patient_id,
-    regexp_extract(phone, '\\d{3}-(\\d{3})-(\\d{4})', 0) as formatted_phone
+    regexp_extract(phone, '\\d{3}-(\\d{3})-(\\d{4})', 0) as formatted_phone,
+    MAP('key1', value1, 'key2', value2) as metadata_map
 FROM patient_demographics
 DISTRIBUTE BY patient_id
 SORT BY patient_id;
 ```
 
-This generates a FHIR Library with content type `application/sql; dialect=hive` instead of the default `application/sql`.
+This generates a FHIR Library with content type `application/sql; dialect=hive; version=3.1.2` instead of the default `application/sql`.
 
 **Supported Dialects:**
 - `@sqlDialect: hive` → `application/sql; dialect=hive`
+- `@sqlDialect: hive` + `@dialectVersion: 3.1.2` → `application/sql; dialect=hive; version=3.1.2`
 - `@sqlDialect: spark` → `application/sql; dialect=spark`  
-- `@sqlDialect: mysql` → `application/sql; dialect=mysql`
-- `@sqlDialect: postgres` → `application/sql; dialect=postgres`
-- `@sqlDialect: oracle` → `application/sql; dialect=oracle`
-- `@sqlDialect: snowflake` → `application/sql; dialect=snowflake`
+- `@sqlDialect: postgres` + `@dialectVersion: 15.4` → `application/sql; dialect=postgres; version=15.4`
+- `@sqlDialect: mysql` + `@dialectVersion: 8.0.33` → `application/sql; dialect=mysql; version=8.0.33`
 - Any custom dialect name → `application/sql; dialect={dialect}`
 - No annotation → `application/sql` (default)
 

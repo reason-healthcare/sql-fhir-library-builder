@@ -69,6 +69,12 @@ python test_sql_dialect.py
 ```
 Tests the `@sqlDialect` annotation feature that modifies content types (e.g., `application/sql; dialect=hive`).
 
+### Dialect Version Testing
+```bash
+python test_dialect_version.py
+```
+Tests the `@dialectVersion` annotation feature that adds version parameters to MIME types (e.g., `application/sql; dialect=hive; version=3.1.2`).
+
 ### Multiple Dependencies Testing
 ```bash
 python test_multiple_dependencies.py
