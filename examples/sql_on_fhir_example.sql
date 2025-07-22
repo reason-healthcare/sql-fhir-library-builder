@@ -9,6 +9,7 @@
 
 -- @relatedDependency: https://sql-on-fhir.org/ig/StructureDefinition/ViewDefinition/PatientDemographics
 -- @relatedDependency: https://sql-on-fhir.org/ig/StructureDefinition/ViewDefinition/PatientAddresses
+-- @param: city string
 WITH RankedAddresses AS (
     SELECT 
         pd.*,
@@ -20,5 +21,5 @@ WITH RankedAddresses AS (
         patient_addresses pa ON pd.patient_id = pa.patient_id
     WHERE 
         pd.age > 18
-        AND pa.city = 'New York'
+        AND pa.city = :city
 )
