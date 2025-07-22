@@ -3,7 +3,7 @@
 Test script to debug parameter parsing
 """
 
-from src.sql_fhir_library_generator import SQLAnnotationParser, FHIRLibraryBuilder
+from src.sql_fhir_library_generator import FHIRLibraryBuilder, SQLAnnotationParser
 
 # Test SQL with @param annotations
 test_sql = """
@@ -26,9 +26,7 @@ for key, value in annotations.items():
 # Build FHIR Library
 builder = FHIRLibraryBuilder()
 library = builder.build_library_from_content(
-    sql_content=test_sql,
-    annotations=annotations,
-    library_id="test-params"
+    sql_content=test_sql, annotations=annotations, library_id="test-params"
 )
 
 print("\nFHIR Library parameters:")

@@ -4,11 +4,13 @@ Test script for @param annotation functionality
 """
 
 import json
+
 from src.sql_fhir_library_generator import FHIRLibraryBuilder
+
 
 def test_param_annotations():
     """Test @param annotations with various data types"""
-    
+
     sql_with_params = """
     -- @title: Parameter Test Query
     -- @description: Testing parameter parsing with different data types
@@ -28,17 +30,17 @@ def test_param_annotations():
     AND birth_date > :birth_date
     AND created_at > :created_at;
     """
-    
+
     builder = FHIRLibraryBuilder()
     library = builder.build_library_from_content(
         sql_content=sql_with_params,
         library_id="test-param-types",
-        filename="test_params.sql"
+        filename="test_params.sql",
     )
-    
+
     print("✅ Parameter Type Test")
     print("=" * 50)
-    
+
     if "parameter" in library:
         print(f"Found {len(library['parameter'])} parameters:")
         for param in library["parameter"]:
@@ -46,19 +48,19 @@ def test_param_annotations():
     else:
         print("❌ No parameters found!")
         return False
-    
+
     # Verify expected parameters
     expected_params = {
         "user_id": "string",
-        "age": "integer", 
+        "age": "integer",
         "salary": "decimal",
         "is_active": "boolean",
         "birth_date": "date",
-        "created_at": "dateTime"
+        "created_at": "dateTime",
     }
-    
+
     actual_params = {p["name"]: p["type"] for p in library["parameter"]}
-    
+
     if actual_params == expected_params:
         print("✅ All parameter types correctly parsed!")
         return True
@@ -68,9 +70,10 @@ def test_param_annotations():
         print(f"Actual: {actual_params}")
         return False
 
+
 def test_legacy_parameters():
     """Test backward compatibility with legacy @parameters annotation"""
-    
+
     sql_with_legacy_params = """
     -- @title: Legacy Parameters Test
     -- @parameters: user_id, start_date, end_date
@@ -78,28 +81,27 @@ def test_legacy_parameters():
     SELECT * FROM logs WHERE user_id = :user_id 
     AND created_at BETWEEN :start_date AND :end_date;
     """
-    
+
     builder = FHIRLibraryBuilder()
     library = builder.build_library_from_content(
         sql_content=sql_with_legacy_params,
         library_id="test-legacy-params",
-        filename="legacy_params.sql"
+        filename="legacy_params.sql",
     )
-    
+
     print("\n✅ Legacy Parameters Test")
     print("=" * 50)
-    
+
     if "parameter" in library:
         print(f"Found {len(library['parameter'])} legacy parameters:")
         for param in library["parameter"]:
             print(f"  • {param['name']}: {param['type']} (use: {param['use']})")
-        
+
         # Verify all parameters are strings with 'in' use
         all_correct = all(
-            p["type"] == "string" and p["use"] == "in" 
-            for p in library["parameter"]
+            p["type"] == "string" and p["use"] == "in" for p in library["parameter"]
         )
-        
+
         if all_correct and len(library["parameter"]) == 3:
             print("✅ Legacy parameters correctly parsed!")
             return True
@@ -110,9 +112,10 @@ def test_legacy_parameters():
         print("❌ No legacy parameters found!")
         return False
 
+
 def test_mixed_parameters():
     """Test mixing @param and @parameters in same query"""
-    
+
     sql_with_mixed = """
     -- @title: Mixed Parameters Test
     -- @parameters: legacy_param1, legacy_param2
@@ -121,22 +124,22 @@ def test_mixed_parameters():
     
     SELECT * FROM table WHERE col1 = :legacy_param1;
     """
-    
+
     builder = FHIRLibraryBuilder()
     library = builder.build_library_from_content(
         sql_content=sql_with_mixed,
         library_id="test-mixed-params",
-        filename="mixed_params.sql"
+        filename="mixed_params.sql",
     )
-    
+
     print("\n✅ Mixed Parameters Test")
     print("=" * 50)
-    
+
     if "parameter" in library:
         print(f"Found {len(library['parameter'])} mixed parameters:")
         for param in library["parameter"]:
             print(f"  • {param['name']}: {param['type']} (use: {param['use']})")
-        
+
         if len(library["parameter"]) == 4:
             print("✅ Mixed parameters correctly parsed!")
             return True
@@ -147,16 +150,17 @@ def test_mixed_parameters():
         print("❌ No mixed parameters found!")
         return False
 
+
 if __name__ == "__main__":
     print("🧪 Testing @param annotation functionality...")
     print("=" * 60)
-    
+
     test1_passed = test_param_annotations()
-    test2_passed = test_legacy_parameters() 
+    test2_passed = test_legacy_parameters()
     test3_passed = test_mixed_parameters()
-    
+
     print("\n" + "=" * 60)
-    
+
     if test1_passed and test2_passed and test3_passed:
         print("🎉 All parameter tests PASSED!")
         exit(0)
