@@ -25,6 +25,8 @@
 -- @relatedDependency: Library/comorbidity-scoring
 -- @performance_tier: high
 -- @cache_duration: 15_minutes
+-- @param: min_age integer
+-- @param: risk_threshold integer
 
 WITH risk_factors AS (
     SELECT 
@@ -35,11 +37,12 @@ WITH risk_factors AS (
         heart_disease_flag,
         CASE 
             WHEN age > 65 THEN 2
-            WHEN age > 45 THEN 1
+            WHEN age > :min_age THEN 1
             ELSE 0
         END as age_risk_score
     FROM patient_demographics pd
     JOIN patient_conditions pc ON pd.patient_id = pc.patient_id
+    WHERE age >= :min_age
 ),
 
 -- @relatedDependency: ValueSet/critical-lab-values
@@ -68,7 +71,7 @@ SELECT
      COALESCE(lri.cholesterol_risk, 0)) as total_risk_score,
     CASE 
         WHEN (rf.age_risk_score + COALESCE(lri.diabetes_risk, 0) + 
-              COALESCE(lri.bp_risk, 0) + COALESCE(lri.cholesterol_risk, 0)) >= 5 
+              COALESCE(lri.bp_risk, 0) + COALESCE(lri.cholesterol_risk, 0)) >= :risk_threshold 
         THEN 'HIGH'
         WHEN (rf.age_risk_score + COALESCE(lri.diabetes_risk, 0) + 
               COALESCE(lri.bp_risk, 0) + COALESCE(lri.cholesterol_risk, 0)) >= 3 
@@ -88,6 +91,8 @@ ORDER BY total_risk_score DESC;
 @relatedDependency: ValueSet/high-risk-medications
 @relatedDependency: CodeSystem/medication-codes
 @audit_required: true
+@param: patient_id string
+@param: include_inactive boolean
 */
 
 -- Check for potentially dangerous drug interactions

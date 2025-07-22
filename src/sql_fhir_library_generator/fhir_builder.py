@@ -124,18 +124,24 @@ class FHIRLibraryBuilder:
                     }
                 ]
             },
-            "content": [
-                {
-                    "contentType": "application/sql",
-                    "data": sql_base64,
-                    "title": filename,
-                    "creation": datetime.now().isoformat() + "Z",
-                }
-            ],
         }
 
         # Map annotations to FHIR properties
         self._apply_annotations_to_library(library, annotations)
+
+        # Generate name from title if not provided
+        if "name" not in library and "title" in library:
+            library["name"] = self._camel_case_title(library["title"])
+
+        # Add content with base64-encoded SQL
+        library["content"] = [
+            {
+                "contentType": "application/sql",
+                "data": sql_base64,
+                "title": filename,
+                "creation": datetime.now().isoformat() + "Z",
+            }
+        ]
 
         # Handle sqlDialect annotation to modify content type
         if "sqlDialect" in annotations and annotations["sqlDialect"]:
@@ -149,10 +155,6 @@ class FHIRLibraryBuilder:
 
             library["content"][0]["contentType"] = content_type
 
-        # Generate name from title if not provided
-        if "name" not in library and "title" in library:
-            library["name"] = self._camel_case_title(library["title"])
-
         # Remove empty properties
         library = self._remove_empty_properties(library)
 
@@ -163,6 +165,55 @@ class FHIRLibraryBuilder:
     ) -> Any:
         """Get annotation value with fallback to default."""
         return annotations.get(key, default)
+
+    def _parse_param_value(self, param_value: str) -> tuple[str, str]:
+        """
+        Parse a parameter annotation value to extract name and optional data type.
+
+        Formats supported:
+        - "param_name" -> ("param_name", "string")
+        - "param_name int" -> ("param_name", "integer")
+        - "param_name datetime" -> ("param_name", "dateTime")
+
+        Args:
+            param_value: The parameter value string from annotation
+
+        Returns:
+            Tuple of (parameter_name, parameter_type)
+        """
+        parts = param_value.strip().split()
+
+        if len(parts) == 1:
+            # Only name provided, default to string
+            return parts[0], "string"
+        elif len(parts) >= 2:
+            # Name and type provided
+            param_name = parts[0]
+            param_type = parts[1].lower()
+
+            # Map common type names to FHIR types
+            type_mapping = {
+                "str": "string",
+                "string": "string",
+                "int": "integer",
+                "integer": "integer",
+                "float": "decimal",
+                "decimal": "decimal",
+                "bool": "boolean",
+                "boolean": "boolean",
+                "date": "date",
+                "datetime": "dateTime",
+                "time": "time",
+                "uri": "uri",
+                "url": "url",
+                "id": "id",
+            }
+
+            fhir_type = type_mapping.get(param_type, "string")
+            return param_name, fhir_type
+        else:
+            # Fallback
+            return param_value.strip(), "string"
 
     def _camel_case_title(self, title: str) -> str:
         """
@@ -293,6 +344,10 @@ class FHIRLibraryBuilder:
         standard_keys.add("relatedDependency")
         standard_keys.add("sqlDialect")
         standard_keys.add("sqlDialectVersion")
+        standard_keys.add("param")  # Add param to prevent it from becoming an extension
+        standard_keys.add(
+            "parameters"
+        )  # Add parameters to prevent it from becoming an extension
 
         for key, value in annotations.items():
             if key not in standard_keys and value is not None and str(value).strip():
@@ -437,13 +492,48 @@ class FHIRLibraryBuilder:
                         {"type": "depends-on", "display": f"Table: {dep}"}
                     )
 
-        # Handle parameters
+        # Handle parameters - support both old @parameters and new @param format
+        parameters_to_add = []
+
+        # Handle legacy @parameters annotation (comma-separated string or list)
         if "parameters" in annotations:
             params = annotations["parameters"]
-            if isinstance(params, list):
-                library["parameter"] = []
+            if isinstance(params, str):
+                # Split comma-separated string
+                param_list = [p.strip() for p in params.split(",") if p.strip()]
+                for param in param_list:
+                    parameters_to_add.append(
+                        {"name": param, "type": "string", "use": "in"}
+                    )
+            elif isinstance(params, list):
                 for param in params:
-                    library["parameter"].append({"name": str(param), "type": "string"})
+                    parameters_to_add.append(
+                        {"name": str(param), "type": "string", "use": "in"}
+                    )
+
+        # Handle new @param annotations - can be a single string or list of strings
+        if "param" in annotations:
+            param_values = annotations["param"]
+            if isinstance(param_values, str):
+                # Single @param annotation
+                param_name, param_type = self._parse_param_value(param_values.strip())
+                parameters_to_add.append(
+                    {"name": param_name, "type": param_type, "use": "in"}
+                )
+            elif isinstance(param_values, list):
+                # Multiple @param annotations collected into a list
+                for param_value in param_values:
+                    if isinstance(param_value, str) and param_value.strip():
+                        param_name, param_type = self._parse_param_value(
+                            param_value.strip()
+                        )
+                        parameters_to_add.append(
+                            {"name": param_name, "type": param_type, "use": "in"}
+                        )
+
+        # Add parameters to library if any were found
+        if parameters_to_add:
+            library["parameter"] = parameters_to_add
 
     def build_multiple_libraries(
         self, sql_files: List[Union[str, Path]]
