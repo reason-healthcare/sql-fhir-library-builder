@@ -12,7 +12,7 @@ from pathlib import Path
 # Add the parent directory to sys.path to import the module
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from sql_fhir_library_generator import FHIRLibraryBuilder
+from sql_fhir_library_generator import FHIRLibraryBuilder  # noqa: E402
 
 
 def test_param_with_types():
@@ -26,7 +26,7 @@ def test_param_with_types():
     -- @param: is_active boolean
     -- @param: birth_date date
     -- @param: created_at dateTime
-    
+
     SELECT * FROM users WHERE user_id = :user_id;
     """
 
@@ -65,7 +65,7 @@ def test_param_defaults_to_string():
     -- @title: Default Parameter Types
     -- @param: param1
     -- @param: param2
-    
+
     SELECT * FROM table WHERE col1 = :param1 AND col2 = :param2;
     """
 
@@ -90,7 +90,7 @@ def test_legacy_parameters():
     sql_with_legacy = """
     -- @title: Legacy Parameters
     -- @parameters: param1, param2, param3
-    
+
     SELECT * FROM table;
     """
 
@@ -120,7 +120,7 @@ def test_mixed_parameters():
     -- @title: Mixed Parameters
     -- @parameters: legacy_param
     -- @param: new_param integer
-    
+
     SELECT * FROM table;
     """
 
@@ -150,7 +150,7 @@ def test_type_mapping():
     -- @param: bool_param bool
     -- @param: url_param url
     -- @param: id_param id
-    
+
     SELECT * FROM table;
     """
 
@@ -180,7 +180,7 @@ def test_no_parameters():
 
     sql_no_params = """
     -- @title: No Parameters
-    
+
     SELECT * FROM table;
     """
 

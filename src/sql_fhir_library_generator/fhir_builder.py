@@ -19,8 +19,9 @@ class FHIRLibraryBuilder:
     """
     Builds FHIR Library resources from SQL files using annotations for metadata.
 
-    The SQL content is base64-encoded and included as an attachment in the Library resource.
-    Annotations from SQL comments are mapped to appropriate FHIR Library properties.
+    The SQL content is base64-encoded and included as an attachment in the
+    Library resource. Annotations from SQL comments are mapped to appropriate
+    FHIR Library properties.
     """
 
     def __init__(self, output_dir: str = "output"):
@@ -271,7 +272,8 @@ class FHIRLibraryBuilder:
             if isinstance(value, list) and all(is_empty(item) for item in value):
                 return True
             if isinstance(value, dict):
-                # Check if dict has only empty values or structural keys with empty values
+                # Check if dict has only empty values or structural keys
+                # with empty values
                 non_empty_values = []
                 for k, v in value.items():
                     if not is_empty(v):
@@ -340,7 +342,8 @@ class FHIRLibraryBuilder:
         # Handle custom extensions for non-standard annotations
         extensions = []
         standard_keys = set(self.annotation_mappings.keys())
-        # Add relatedDependency, sqlDialect, and sqlDialectVersion to standard keys since we handle them specially
+        # Add relatedDependency, sqlDialect, and sqlDialectVersion to standard
+        # keys since we handle them specially
         standard_keys.add("relatedDependency")
         standard_keys.add("sqlDialect")
         standard_keys.add("sqlDialectVersion")
@@ -450,7 +453,8 @@ class FHIRLibraryBuilder:
     ):
         """Add additional metadata based on common SQL annotations."""
 
-        # Handle @relatedDependency annotations - create proper FHIR relatedArtifact entries
+        # Handle @relatedDependency annotations - create proper FHIR
+        # relatedArtifact entries
         if "relatedDependency" in annotations:
             if "relatedArtifact" not in library:
                 library["relatedArtifact"] = []
@@ -562,14 +566,20 @@ class FHIRLibraryBuilder:
                     "type": {
                         "coding": [
                             {
-                                "system": "http://terminology.hl7.org/CodeSystem/library-type",
+                                "system": (
+                                    "http://terminology.hl7.org/"
+                                    "CodeSystem/library-type"
+                                ),
                                 "code": "logic-library",
                             }
                         ]
                     },
                     "extension": [
                         {
-                            "url": "http://example.org/fhir/StructureDefinition/processing-error",
+                            "url": (
+                                "http://example.org/fhir/"
+                                "StructureDefinition/processing-error"
+                            ),
                             "valueString": str(e),
                         }
                     ],
@@ -586,7 +596,8 @@ class FHIRLibraryBuilder:
 
         Args:
             library: FHIR Library resource dictionary
-            output_path: Path where to save the JSON file (relative to output_dir if not absolute)
+            output_path: Path where to save the JSON file (relative to
+                        output_dir if not absolute)
         """
         output_path = Path(output_path)
 
@@ -606,7 +617,8 @@ class FHIRLibraryBuilder:
         self, library: Dict[str, Any], filename: Optional[str] = None
     ) -> Path:
         """
-        Export a FHIR Library resource to the output directory with auto-generated filename.
+        Export a FHIR Library resource to the output directory with
+        auto-generated filename.
 
         Args:
             library: FHIR Library resource dictionary
@@ -646,7 +658,7 @@ def main():
     -- @parameters: user_id, start_date, end_date
     -- @relatedDependency: Library/patient-demographics
     -- @relatedDependency: Library/security-policies
-    
+
     /*
     @usage: This library contains SQL queries for managing user accounts,
             including creation, updates, and reporting functionality.
@@ -657,17 +669,17 @@ def main():
     @security_level: high
     @relatedDependency: Questionnaire/user-preferences, ValueSet/user-roles
     */
-    
+
     -- Get user details
-    SELECT u.id, u.username, u.email, 
+    SELECT u.id, u.username, u.email,
            p.first_name, p.last_name
     FROM users u
     LEFT JOIN user_profiles p ON u.id = p.user_id
     WHERE u.id = :user_id;
-    
+
     -- User activity report
     SELECT COUNT(*) as active_users
-    FROM user_sessions 
+    FROM user_sessions
     WHERE created_at BETWEEN :start_date AND :end_date;
     """
 

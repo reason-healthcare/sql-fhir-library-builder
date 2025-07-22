@@ -54,7 +54,7 @@ def test_name_generation():
         sql_content = f"""
         -- @title: {title}
         -- @status: active
-        
+
         SELECT 1 as test;
         """
 
@@ -86,7 +86,7 @@ def test_name_generation():
     -- @title: Some Complex Title Here
     -- @name: explicitCustomName
     -- @status: active
-    
+
     SELECT 1;
     """
 
@@ -103,7 +103,7 @@ def test_name_generation():
     status = "✅ PASS" if explicit_passed else "❌ FAIL"
 
     print(f"{status} | Explicit @name should be preserved")
-    print(f"Title: 'Some Complex Title Here'")
+    print("\1")
     print(f"Expected: {expected_explicit}")
     print(f"Got:      {explicit_name}")
 

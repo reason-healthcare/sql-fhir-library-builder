@@ -1,7 +1,8 @@
 """
 SQL FHIR Library Generator
 
-A Python library that extracts @annotations from SQL file comments and creates FHIR Library resources.
+A Python library that extracts @annotations from SQL file comments and
+creates FHIR Library resources.
 """
 
 from .fhir_builder import FHIRLibraryBuilder

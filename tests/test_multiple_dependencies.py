@@ -7,7 +7,6 @@ with the same key and how they are converted to FHIR relatedArtifact entries.
 """
 
 import json
-from pathlib import Path
 
 from sql_fhir_library_generator import FHIRLibraryBuilder, SQLAnnotationParser
 
@@ -28,7 +27,7 @@ def main():
     -- @relatedDependency: Library/patient-demographics
     -- @relatedDependency: Library/clinical-observations
     -- @relatedDependency: Library/medication-orders
-    
+
     /*
     @purpose: Support care coordination workflows by providing
              standardized queries across clinical systems
@@ -38,9 +37,9 @@ def main():
     @database: clinical_warehouse
     @tables: patients, observations, medications, care_teams
     */
-    
+
     -- Main care coordination query
-    SELECT 
+    SELECT
         p.patient_id,
         p.name,
         o.observation_date,
@@ -52,7 +51,7 @@ def main():
     LEFT JOIN medications m ON p.patient_id = m.patient_id
     LEFT JOIN care_teams ct ON p.patient_id = ct.patient_id
     WHERE p.active = 1;
-    
+
     -- @relatedDependency: Library/audit-logging
     -- Log access for compliance
     INSERT INTO access_log (user_id, resource_type, timestamp)
@@ -81,7 +80,7 @@ def main():
         filename="care_coordination.sql",
     )
 
-    print(f"\nFHIR Library Generated:")
+    print("\1")
     print("-" * 25)
     print(f"ID: {library['id']}")
     print(f"Title: {library.get('title', 'N/A')}")
@@ -103,7 +102,7 @@ def main():
     print(f"\nLibrary exported to: {output_file}")
 
     # Show a portion of the JSON for verification
-    print(f"\nSample of relatedArtifact section:")
+    print("\1")
     print("-" * 35)
     if related_artifacts:
         print(json.dumps(related_artifacts[:3], indent=2))
@@ -111,7 +110,7 @@ def main():
             print(f"... and {len(related_artifacts) - 3} more")
 
     # Test edge cases
-    print(f"\n\nTesting Edge Cases:")
+    print("\1")
     print("-" * 20)
 
     edge_case_sql = """
@@ -120,7 +119,7 @@ def main():
     -- @relatedDependency: Library/dep-1, Library/dep-2, Library/dep-3
     -- @other: value1
     -- @other: value2
-    
+
     SELECT 1;
     """
 

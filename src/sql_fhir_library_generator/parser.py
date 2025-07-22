@@ -1,7 +1,8 @@
 """
 SQL Annotation Parser
 
-A parser that extracts @annotations from SQL file comments and returns them as key-value pairs.
+A parser that extracts @annotations from SQL file comments and returns
+them as key-value pairs.
 """
 
 import re
@@ -213,13 +214,13 @@ def main():
     -- @version: 1.0
     -- @description: User table creation script
     -- @tags: users, authentication, core
-    
+
     CREATE TABLE users (
         id INT PRIMARY KEY,
         username VARCHAR(50) UNIQUE NOT NULL,
         email VARCHAR(100) NOT NULL
     );
-    
+
     /*
     @table: users
     @created: 2024-01-15
@@ -227,9 +228,9 @@ def main():
     @performance_critical: true
     @indexes: id, username, email
     */
-    
+
     CREATE INDEX idx_username ON users(username);
-    
+
     -- @query_type: maintenance
     -- @frequency: daily
     ANALYZE TABLE users;

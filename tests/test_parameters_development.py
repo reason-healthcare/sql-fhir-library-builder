@@ -3,7 +3,6 @@
 Test script for @param annotation functionality
 """
 
-import json
 
 from src.sql_fhir_library_generator import FHIRLibraryBuilder
 
@@ -20,11 +19,11 @@ def test_param_annotations():
     -- @param: is_active boolean
     -- @param: birth_date date
     -- @param: created_at dateTime
-    
-    SELECT user_id, age, salary, is_active 
-    FROM users 
-    WHERE user_id = :user_id 
-    AND age > :age 
+
+    SELECT user_id, age, salary, is_active
+    FROM users
+    WHERE user_id = :user_id
+    AND age > :age
     AND salary > :salary
     AND is_active = :is_active
     AND birth_date > :birth_date
@@ -77,8 +76,8 @@ def test_legacy_parameters():
     sql_with_legacy_params = """
     -- @title: Legacy Parameters Test
     -- @parameters: user_id, start_date, end_date
-    
-    SELECT * FROM logs WHERE user_id = :user_id 
+
+    SELECT * FROM logs WHERE user_id = :user_id
     AND created_at BETWEEN :start_date AND :end_date;
     """
 
@@ -121,7 +120,7 @@ def test_mixed_parameters():
     -- @parameters: legacy_param1, legacy_param2
     -- @param: new_param integer
     -- @param: another_param boolean
-    
+
     SELECT * FROM table WHERE col1 = :legacy_param1;
     """
 

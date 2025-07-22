@@ -6,7 +6,6 @@ This script demonstrates the complete workflow from SQL files with annotations
 to FHIR Library resources.
 """
 
-import json
 from datetime import datetime
 from pathlib import Path
 
@@ -43,7 +42,7 @@ def print_annotations(annotations: dict, title: str = "Annotations"):
 
 def print_fhir_summary(library: dict):
     """Print a summary of the FHIR Library resource."""
-    print(f"\nFHIR Library Summary:")
+    print("\1")
     print("-" * 20)
     print(f"ID: {library.get('id', 'N/A')}")
     print(f"Title: {library.get('title', 'N/A')}")
@@ -102,7 +101,7 @@ def main():
     -- @jurisdiction: US, CA
     -- @approvalDate: 2024-06-01
     -- @lastReviewDate: 2024-07-15
-    
+
     /*
     @usage: This library provides standardized queries for extracting
             and analyzing patient demographic information across
@@ -117,9 +116,9 @@ def main():
     @refresh_frequency: daily
     @data_retention: 7_years
     */
-    
+
     -- Core patient demographics query
-    SELECT 
+    SELECT
         p.patient_id,
         p.medical_record_number,
         d.first_name,
@@ -135,11 +134,11 @@ def main():
     LEFT JOIN addresses a ON p.patient_id = a.patient_id
     WHERE p.facility_id = :facility_id
         AND d.date_of_birth BETWEEN :start_date AND :end_date;
-    
+
     -- @query_type: aggregation
     -- @frequency: weekly
     -- @output_format: summary
-    SELECT 
+    SELECT
         d.gender,
         COUNT(*) as patient_count,
         AVG(YEAR(CURRENT_DATE) - YEAR(d.date_of_birth)) as avg_age
@@ -226,7 +225,7 @@ def main():
         # Build all libraries at once
         libraries = builder.build_multiple_libraries(sql_files)
 
-        print(f"\nBatch Results:")
+        print("\1")
         print("-" * 20)
 
         for i, lib in enumerate(libraries, 1):
@@ -245,9 +244,8 @@ def main():
             )
 
             if error_ext:
-                print(
-                    f"  {i}. ERROR - {lib.get('id', 'unknown')}: {error_ext.get('valueString', 'Unknown error')}"
-                )
+                error_msg = error_ext.get("valueString", "Unknown error")
+                print(f"  {i}. ERROR - {lib.get('id', 'unknown')}: {error_msg}")
             else:
                 print(f"  {i}. {title} (Status: {status}, Extensions: {extensions})")
 
@@ -271,17 +269,17 @@ def main():
 
     edge_case_sql = """
     -- @boolean_true: true
-    -- @boolean_false: false  
+    -- @boolean_false: false
     -- @integer: 42
     -- @float: 3.14159
     -- @list_strings: apple, banana, cherry
     -- @list_mixed: 1, true, hello, 3.14
     -- @quoted_string: "This is a quoted string"
-    -- @empty_value: 
+    -- @empty_value:
     -- @special_chars: value_with_underscores
     -- @with_colon: key: value with colon
     -- @with_equals: key = value with equals
-    
+
     /*
     @multi_line_value: This is a value that spans
                        multiple lines in the comment
@@ -289,7 +287,7 @@ def main():
     @date_iso: 2024-07-21
     @date_us: 07/21/2024
     */
-    
+
     SELECT 1 as test;
     """
 
@@ -317,8 +315,8 @@ def main():
     print("✅ Batch processing capabilities")
     print("✅ JSON export functionality")
 
-    print(f"\nAll tests completed successfully!")
-    print(f"Check the generated JSON files for detailed FHIR Library resources.")
+    print("\1")
+    print("\1")
 
 
 if __name__ == "__main__":

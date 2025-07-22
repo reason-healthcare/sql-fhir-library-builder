@@ -11,7 +11,7 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from sql_fhir_library_generator import FHIRLibraryBuilder
+from sql_fhir_library_generator import FHIRLibraryBuilder  # noqa: E402
 
 
 def test_dialect_version():
@@ -62,9 +62,9 @@ def test_dialect_version():
             print(f"  Actual Content Type:   {actual_content_type}")
 
             if actual_content_type == expected_content_type:
-                print(f"  ✅ PASS - Content type matches expectation")
+                print("\1")
             else:
-                print(f"  ❌ FAIL - Content type mismatch")
+                print("\1")
 
             # Show additional details
             output_file = library.get("id", "unknown") + ".json"
@@ -82,27 +82,34 @@ def test_dialect_version():
     print("The sqlDialectVersion annotation works with any SQL dialect.")
     print("Examples of content types that can be generated:")
     print(
-        "  @sqlDialect: hive, @sqlDialectVersion: 3.1.2     → application/sql; dialect=hive; version=3.1.2"
+        "  @sqlDialect: hive, @sqlDialectVersion: 3.1.2     → "
+        "application/sql; dialect=hive; version=3.1.2"
     )
     print(
-        "  @sqlDialect: spark, @sqlDialectVersion: 3.4.0    → application/sql; dialect=spark; version=3.4.0"
+        "  @sqlDialect: spark, @sqlDialectVersion: 3.4.0    → "
+        "application/sql; dialect=spark; version=3.4.0"
     )
     print(
-        "  @sqlDialect: postgres, @sqlDialectVersion: 15.4  → application/sql; dialect=postgres; version=15.4"
+        "  @sqlDialect: postgres, @sqlDialectVersion: 15.4  → "
+        "application/sql; dialect=postgres; version=15.4"
     )
     print(
-        "  @sqlDialect: mysql, @sqlDialectVersion: 8.0.33   → application/sql; dialect=mysql; version=8.0.33"
+        "  @sqlDialect: mysql, @sqlDialectVersion: 8.0.33   → "
+        "application/sql; dialect=mysql; version=8.0.33"
     )
     print(
-        "  @sqlDialect: oracle, @sqlDialectVersion: 19c     → application/sql; dialect=oracle; version=19c"
+        "  @sqlDialect: oracle, @sqlDialectVersion: 19c     → "
+        "application/sql; dialect=oracle; version=19c"
     )
     print(
-        "  @sqlDialect: snowflake, @sqlDialectVersion: 7.x  → application/sql; dialect=snowflake; version=7.x"
+        "  @sqlDialect: snowflake, @sqlDialectVersion: 7.x  → "
+        "application/sql; dialect=snowflake; version=7.x"
     )
     print(
-        "  @sqlDialect: hive (no version)                   → application/sql; dialect=hive"
+        "  @sqlDialect: hive (no version)                   → "
+        "application/sql; dialect=hive"
     )
-    print("  (no annotations)                                 → application/sql")
+    print("  (no annotations)                                 → " "application/sql")
     print()
 
 

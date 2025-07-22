@@ -23,30 +23,30 @@ def test_empty_property_removal():
     -- @version: 1.0.0
     -- @status: active
     -- @author: Test Author
-    -- @publisher: 
-    -- @copyright: 
+    -- @publisher:
+    -- @copyright:
     -- @purpose: Demonstrate empty property handling
-    -- @usage: 
-    -- @url: 
-    -- @contact: 
-    -- @tags: 
+    -- @usage:
+    -- @url:
+    -- @contact:
+    -- @tags:
     -- @relatedDependency: Library/test-dependency
-    -- @relatedDependency: 
-    
+    -- @relatedDependency:
+
     /*
     @experimental: true
-    @jurisdiction: 
-    @approvalDate: 
+    @jurisdiction:
+    @approvalDate:
     @lastReviewDate: 2024-07-21
-    @effectivePeriod: 
-    @identifier: 
-    @subject: 
+    @effectivePeriod:
+    @identifier:
+    @subject:
     @database: test_db
-    @schema: 
+    @schema:
     @tables: patients, observations
-    @parameters: 
+    @parameters:
     */
-    
+
     SELECT p.id, p.name, o.value
     FROM patients p
     JOIN observations o ON p.id = o.patient_id;
@@ -68,7 +68,7 @@ def test_empty_property_removal():
     print(json.dumps(library, indent=2))
 
     # Manually verify what was removed vs kept
-    print(f"\n2. Properties Analysis:")
+    print("\1")
     print("-" * 20)
 
     kept_properties = []
@@ -105,7 +105,7 @@ def test_empty_property_removal():
     print(f"\n3. Library exported to: {output_file}")
 
     # Compare with a version that has all properties (for demonstration)
-    print(f"\n4. Comparison - Properties that would be empty:")
+    print("\1")
     print("-" * 45)
 
     potentially_empty = [
@@ -125,7 +125,7 @@ def test_empty_property_removal():
         status = "✅ Removed" if prop not in library else f"❌ Kept: {library[prop]}"
         print(f"  {prop}: {status}")
 
-    print(f"\n✅ Empty property removal test completed!")
+    print("\1")
     print(f"📄 Check {output_file} for the complete cleaned FHIR Library resource.")
 
 

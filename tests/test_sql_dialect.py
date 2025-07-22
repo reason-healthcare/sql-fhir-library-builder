@@ -6,7 +6,6 @@ This script demonstrates the sqlDialect annotation feature that allows
 specifying the SQL dialect to modify the FHIR Library content type.
 """
 
-import json
 
 from sql_fhir_library_generator import FHIRLibraryBuilder
 

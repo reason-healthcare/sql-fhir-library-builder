@@ -6,7 +6,6 @@ This script demonstrates how to use the SQL annotation parser to extract
 annotations from SQL files and display the results.
 """
 
-import sys
 from pathlib import Path
 
 from sql_fhir_library_generator import SQLAnnotationParser
@@ -46,9 +45,9 @@ def main():
     -- @active: true
     -- @priority: 5
     -- @confidence: 0.95
-    
+
     SELECT * FROM test_table;
-    
+
     /*
     @description: This is a multi-line comment
                   with an annotation that spans multiple lines
@@ -56,7 +55,7 @@ def main():
     @list_items: apple, banana, cherry
     @date_created: 2024-07-21
     */
-    
+
     CREATE TABLE test (id INT);
     """
 
@@ -66,7 +65,7 @@ def main():
     # Test 2: Parse files from examples directory
     examples_dir = Path("examples")
     if examples_dir.exists():
-        print(f"\n\nTest 2: Parsing Example Files")
+        print("\1")
         print("=" * 30)
 
         sql_files = list(examples_dir.glob("*.sql"))
@@ -81,13 +80,13 @@ def main():
         else:
             print("No SQL files found in examples directory.")
     else:
-        print(f"\n\nExamples directory not found. Skipping file parsing test.")
+        print("\1")
 
     # Test 3: Parse multiple files at once
     if examples_dir.exists():
         sql_files = list(examples_dir.glob("*.sql"))
         if sql_files:
-            print(f"\n\nTest 3: Batch File Processing")
+            print("\1")
             print("=" * 30)
 
             batch_results = parser.parse_multiple_files(sql_files)
@@ -105,9 +104,9 @@ def main():
                     if len(file_annotations) > 3:
                         print(f"  ... and {len(file_annotations) - 3} more")
 
-    print(f"\n\nTesting completed!")
+    print("")
     print(
-        f"For more detailed examples, check the SQL files in the 'examples' directory."
+        "For more detailed examples, check the SQL files in the 'examples' directory."
     )
 
 
