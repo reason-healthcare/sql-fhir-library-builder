@@ -10,7 +10,7 @@ import json
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from .parser import SQLAnnotationParser
 
@@ -166,7 +166,7 @@ class FHIRLibraryBuilder:
         """Get annotation value with fallback to default."""
         return annotations.get(key, default)
 
-    def _parse_param_value(self, param_value: str) -> tuple[str, str]:
+    def _parse_param_value(self, param_value: str) -> Tuple[str, str]:
         """
         Parse a parameter annotation value to extract name and optional data type.
 
