@@ -53,10 +53,3 @@ SELECT
 FROM users u
 LEFT JOIN user_profiles p ON u.id = p.user_id
 LEFT JOIN user_sessions s ON u.id = s.user_id;
-
--- @cleanup_task: true
--- @frequency: weekly  
--- @target: temporary_data
--- @retention: 30_days
-DELETE FROM user_sessions 
-WHERE created_at < DATE_SUB(NOW(), INTERVAL 30 DAY);

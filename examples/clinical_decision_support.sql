@@ -109,9 +109,3 @@ WHERE pm1.status = 'ACTIVE'
     AND pm2.status = 'ACTIVE'
     AND dir.interaction_severity IN ('HIGH', 'CRITICAL')
     AND pm1.patient_id = :patient_id;  -- Parameter for specific patient
-
--- @cleanup_query: true
--- @frequency: daily
--- @relatedDependency: Library/data-retention-policies
-DELETE FROM temp_clinical_calculations 
-WHERE calculation_date < DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY);
